@@ -7,7 +7,8 @@ add_executable(
     main.cpp
 )
 
+add_subdirectory(glad)
 add_subdirectory(glfw)
 
-target_include_directories(${PROJECT_NAME} PRIVATE "glfw/include")
-target_link_libraries(${PROJECT_NAME} glfw)
+target_include_directories(${PROJECT_NAME} PRIVATE "glfw/include" "glad/include")
+target_link_libraries(${PROJECT_NAME} glfw glad)
