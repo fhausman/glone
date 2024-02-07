@@ -17,6 +17,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE "glfw/include" "glad/include"
 target_link_libraries(${PROJECT_NAME} glfw glad)
 
 add_custom_target(copy_shaders ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/shaders ${CMAKE_BINARY_DIR}/shaders
-    DEPENDS ${MY_TARGET}
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/shaders ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/shaders
 )
+
+add_dependencies(${PROJECT_NAME} copy_shaders)
