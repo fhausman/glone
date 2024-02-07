@@ -5,7 +5,7 @@
 #include <glad/glad.h>
 #include <iostream>
 
-void ShaderCompiler::compileShaders(std::filesystem::path& root) {
+void ShaderCompiler::compileShaders(const std::filesystem::path& root) {
     std::cout << "COMPILING SHADERS" << std::endl;
     std::cout << (std::filesystem::current_path() / root).string() << std::endl << std::endl;
 

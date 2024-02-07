@@ -6,7 +6,7 @@
 
 class ShaderCompiler {
   public:
-    void compileShaders(std::filesystem::path& root);
+    void compileShaders(const std::filesystem::path& root);
     uint32_t getShader(const std::string& name) const;
 
     ShaderCompiler() = default;
