@@ -4,3 +4,5 @@ ColumnLimit: 150
 SortIncludes: false
 Cpp11BracedListStyle: false
 BreakBeforeBinaryOperators: All
+PointerAlignment: Left
+ReferenceAlignmentStyle: Left

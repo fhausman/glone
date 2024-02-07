@@ -37,14 +37,14 @@ std::vector<uint32_t> indices = {
     1, 2, 3  // second triangle
 };
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     auto engineSettings = GloneSettings{ "Glone Engine", 1920, 1080, "3.3" };
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, engineSettings.getMajorVersion());
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, engineSettings.getMinorVersion());
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    GLFWwindow *window = glfwCreateWindow(engineSettings.width, engineSettings.height, engineSettings.name.c_str(), NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(engineSettings.width, engineSettings.height, engineSettings.name.c_str(), NULL, NULL);
     if (window == NULL) {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(decltype(indices)::value_type), indices.data(), GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
     while (!glfwWindowShouldClose(window)) {
