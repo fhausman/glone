@@ -1,0 +1,6 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+ColumnLimit: 150
+SortIncludes: false
+Cpp11BracedListStyle: false
+BreakBeforeBinaryOperators: All
