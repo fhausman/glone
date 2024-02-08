@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include "shader_compiler/shader_compiler.h"
+#include "shader_compiler/shader_program.h"
 
 struct GloneSettings {
     std::string name;
@@ -25,16 +26,16 @@ struct GloneSettings {
 };
 
 std::vector<float> vertices = {
-    0.5f,  0.5f,  0.0f, // top right
-    0.5f,  -0.5f, 0.0f, // bottom right
-    -0.5f, -0.5f, 0.0f, // bottom left
-    -0.5f, 0.5f,  0.0f  // top left
+    // positions        // colors
+    0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom right
+    -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom left
+    0.0f,  0.5f,  0.0f, 0.0f, 0.0f, 1.0f  // top
 };
 
 std::vector<uint32_t> indices = {
     // note that we start from 0!
     0, 1, 3, // first triangle
-    1, 2, 3  // second triangle
+    // 1, 2, 3  // second triangle
 };
 
 int main(int argc, char* argv[]) {
@@ -60,22 +61,10 @@ int main(int argc, char* argv[]) {
     ShaderCompiler shaderCompiler;
     shaderCompiler.compileShaders(std::filesystem::path("shaders"));
 
+    ShaderProgram shaderProgram(shaderCompiler.getShader("testvs"), shaderCompiler.getShader("testfs"));
+    shaderProgram.useProgram();
+
     glViewport(0, 0, engineSettings.width, engineSettings.height);
-
-    int success = 0;
-    unsigned int shaderProgram;
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, shaderCompiler.getShader("testvs"));
-    glAttachShader(shaderProgram, shaderCompiler.getShader("testfs"));
-    glLinkProgram(shaderProgram);
-
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if (!success) {
-        char infoLog[512];
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-
-        std::cout << infoLog << std::endl;
-    }
 
     uint32_t VAO;
     glGenVertexArrays(1, &VAO);
@@ -94,8 +83,11 @@ int main(int argc, char* argv[]) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(decltype(indices)::value_type), indices.data(), GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     while (!glfwWindowShouldClose(window)) {
         // input
@@ -106,9 +98,8 @@ int main(int argc, char* argv[]) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

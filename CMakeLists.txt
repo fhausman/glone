@@ -8,6 +8,7 @@ add_executable(
     ${PROJECT_NAME}
     "main.cpp"
     "shader_compiler/shader_compiler.cpp"
+    "shader_compiler/shader_program.cpp"
 )
 
 add_subdirectory(glad)
