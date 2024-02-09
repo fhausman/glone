@@ -13,9 +13,10 @@ add_executable(
 
 add_subdirectory(glad)
 add_subdirectory(glfw)
+add_subdirectory(glm)
 
-target_include_directories(${PROJECT_NAME} PRIVATE "glfw/include" "glad/include")
-target_link_libraries(${PROJECT_NAME} glfw glad)
+target_include_directories(${PROJECT_NAME} PRIVATE "glfw/include" "glad/include" "glm")
+target_link_libraries(${PROJECT_NAME} glfw glad glm)
 
 add_custom_target(copy_shaders ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/shaders ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/shaders
