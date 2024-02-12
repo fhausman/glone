@@ -2,7 +2,12 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
+#include "camera/camera.h"
+#include "sprite/sprite.h"
+#include "sprite/sprite_renderer.h"
+#include "texture/texture.h"
 #include "shader_compiler/shader_compiler.h"
 #include "shader_compiler/shader_program.h"
 
@@ -38,6 +43,14 @@ std::vector<uint32_t> indices = {
     // 1, 2, 3  // second triangle
 };
 
+// std::vector<float> spriteIndices = {
+//     //position  //UVs
+//     0.0f, 0.0f, 0.0f, 1.0f,
+//     0.0f, 1.0f, 0.0f, 0.0f,
+// };
+
+float pixelsPerUnit = 32.0f;
+
 int main(int argc, char* argv[]) {
     auto engineSettings = GloneSettings{ "Glone Engine", 1920, 1080, "3.3" };
 
@@ -45,6 +58,7 @@ int main(int argc, char* argv[]) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, engineSettings.getMajorVersion());
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, engineSettings.getMinorVersion());
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     GLFWwindow* window = glfwCreateWindow(engineSettings.width, engineSettings.height, engineSettings.name.c_str(), NULL, NULL);
     if (window == NULL) {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -61,33 +75,38 @@ int main(int argc, char* argv[]) {
     ShaderCompiler shaderCompiler;
     shaderCompiler.compileShaders(std::filesystem::path("shaders"));
 
-    ShaderProgram shaderProgram(shaderCompiler.getShader("testvs"), shaderCompiler.getShader("testfs"));
-    shaderProgram.useProgram();
+    Camera* camera = Camera::get();
+    camera->setSize(engineSettings.width, engineSettings.height);
+
+    Sprite sprite("awesomeface.png");
 
     glViewport(0, 0, engineSettings.width, engineSettings.height);
 
-    uint32_t VAO;
-    glGenVertexArrays(1, &VAO);
+    // uint32_t VAO;
+    // glGenVertexArrays(1, &VAO);
 
-    uint32_t VBO;
-    glGenBuffers(1, &VBO);
+    // uint32_t VBO;
+    // glGenBuffers(1, &VBO);
 
-    uint32_t EBO;
-    glGenBuffers(1, &EBO);
+    // uint32_t EBO;
+    // glGenBuffers(1, &EBO);
 
-    glBindVertexArray(VAO);
+    // glBindVertexArray(VAO);
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(decltype(vertices)::value_type), vertices.data(), GL_STATIC_DRAW);
+    // glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    // glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(decltype(vertices)::value_type), vertices.data(), GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(decltype(indices)::value_type), indices.data(), GL_STATIC_DRAW);
+    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(decltype(indices)::value_type), indices.data(), GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    // glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+    // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    // glEnableVertexAttribArray(1);
+
+    SpriteRenderer spriteRenderer(ShaderProgram(shaderCompiler.getShader("default_spritevs"), shaderCompiler.getShader("default_spritefs")));
+    spriteRenderer.initRenderData();
 
     while (!glfwWindowShouldClose(window)) {
         // input
@@ -98,8 +117,9 @@ int main(int argc, char* argv[]) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        spriteRenderer.render(sprite);
+        // glBindVertexArray(VAO);
+        // glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
