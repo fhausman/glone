@@ -1,6 +1,7 @@
 #include "sprite_renderer.h"
 
 #include <vector>
+#include <type_traits>
 #include <glad/glad.h>
 #include "glm/gtc/type_ptr.hpp"
 #include "camera/camera.h"
@@ -18,12 +19,16 @@ const std::vector quad = {
     };
 // clang-format on
 
+template <class T> constexpr size_t sizeof_vector(const std::vector<T>& vec) {
+    return vec.size() * sizeof(T);
+}
+
 void SpriteRenderer::initRenderData() {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, quad.size(), quad.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof_vector(quad), quad.data(), GL_STATIC_DRAW);
 
     glBindVertexArray(VAO);
     glEnableVertexAttribArray(0);
@@ -40,7 +45,7 @@ void SpriteRenderer::render(const Sprite& sprite) {
 
     auto model = sprite.getModel();
     glUniformMatrix4fv(glGetUniformLocation(shader.id(), "model"), 1, false, glm::value_ptr(model));
-    glUniform3f(glGetUniformLocation(shader.id(), "color"), 1.0f, 1.0f, 1.0f);
+    glUniform3f(glGetUniformLocation(shader.id(), "spriteColor"), 1.0f, 1.0f, 1.0f);
 
     glActiveTexture(GL_TEXTURE0);
     sprite.bindTexture();

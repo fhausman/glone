@@ -30,7 +30,7 @@ class Sprite {
     Texture texture;
     glm::vec4 color = glm::vec4(1.0, 1.0f, 1.0f, 1.0f);
 
-    glm::vec2 position = glm::vec2(200.0f, 200.0f);
+    glm::vec2 position = glm::vec2(0.0f, 0.0f);
     glm::vec2 size = glm::vec2(0.0f, 0.0f);
     glm::vec2 pivot = glm::vec2(0.5f, 0.5f);
     float rotation = 0.0f;

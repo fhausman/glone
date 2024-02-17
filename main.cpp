@@ -82,29 +82,6 @@ int main(int argc, char* argv[]) {
 
     glViewport(0, 0, engineSettings.width, engineSettings.height);
 
-    // uint32_t VAO;
-    // glGenVertexArrays(1, &VAO);
-
-    // uint32_t VBO;
-    // glGenBuffers(1, &VBO);
-
-    // uint32_t EBO;
-    // glGenBuffers(1, &EBO);
-
-    // glBindVertexArray(VAO);
-
-    // glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    // glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(decltype(vertices)::value_type), vertices.data(), GL_STATIC_DRAW);
-
-    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(decltype(indices)::value_type), indices.data(), GL_STATIC_DRAW);
-
-    // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    // glEnableVertexAttribArray(0);
-
-    // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    // glEnableVertexAttribArray(1);
-
     SpriteRenderer spriteRenderer(ShaderProgram(shaderCompiler.getShader("default_spritevs"), shaderCompiler.getShader("default_spritefs")));
     spriteRenderer.initRenderData();
 
@@ -118,8 +95,6 @@ int main(int argc, char* argv[]) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         spriteRenderer.render(sprite);
-        // glBindVertexArray(VAO);
-        // glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
