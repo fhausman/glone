@@ -2,14 +2,19 @@
 
 #include "glm/ext/matrix_clip_space.hpp"
 
+void Camera::addOffset(float x, float y) {
+    pos_x += x;
+    pos_y += y;
+}
+
 void Camera::setPosition(float x, float y) {
     pos_x = x;
     pos_y = y;
 }
 
-void Camera::setSize(float width, float height) {
-    this->width = width;
-    this->height = height;
+void Camera::setSize(float w, float h) {
+    width = w;
+    height = h;
 }
 
 glm::mat4 Camera::projection() {

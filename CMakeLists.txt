@@ -10,6 +10,7 @@ add_executable(
     ${PROJECT_NAME}
     "main.cpp"
     "game/camera/camera.cpp"
+    "input/input.cpp"
     "rendering/texture/texture.cpp"
     "rendering/texture/texture.h"
     "rendering/sprite/sprite.cpp"
@@ -27,7 +28,7 @@ add_subdirectory(glad)
 add_subdirectory(glfw)
 add_subdirectory(glm)
 
-target_include_directories(${PROJECT_NAME} PRIVATE "glfw/include" "glad/include" "glm" "shader_compiler" "rendering" "game" "stb")
+target_include_directories(${PROJECT_NAME} PRIVATE "glfw/include" "glad/include" "glm" "shader_compiler" "rendering" "game" "stb" "input")
 target_link_libraries(${PROJECT_NAME} glfw glad glm)
 
 add_custom_target(copy_shaders ALL

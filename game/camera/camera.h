@@ -9,8 +9,9 @@ class Camera {
         return &instance;
     }
 
+    void addOffset(float x, float y);
     void setPosition(float x, float y);
-    void setSize(float width, float height);
+    void setSize(float w, float h);
 
     glm::mat4 projection();
 

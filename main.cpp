@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+#include "input/input.h"
 #include "camera/camera.h"
 #include "sprite/sprite.h"
 #include "sprite/sprite_renderer.h"
@@ -72,11 +73,14 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
+    Input& input = *Input::get();
+    input.setWindow(window);
+
     ShaderCompiler shaderCompiler;
     shaderCompiler.compileShaders(std::filesystem::path("shaders"));
 
-    Camera* camera = Camera::get();
-    camera->setSize(engineSettings.width, engineSettings.height);
+    Camera& camera = *Camera::get();
+    camera.setSize(engineSettings.width, engineSettings.height);
 
     Sprite sprite("awesomeface.png");
 
@@ -87,8 +91,12 @@ int main(int argc, char* argv[]) {
 
     while (!glfwWindowShouldClose(window)) {
         // input
-        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        input.pollInputEvents();
+        if (input.exitRequested())
             glfwSetWindowShouldClose(window, true);
+
+        auto& direction = input.getDirection();
+        camera.addOffset(direction.x, direction.y);
 
         // render
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
