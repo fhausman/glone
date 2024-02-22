@@ -31,12 +31,18 @@ add_subdirectory(glm)
 target_include_directories(${PROJECT_NAME} PRIVATE "glfw/include" "glad/include" "glm" "shader_compiler" "rendering" "game" "stb" "input")
 target_link_libraries(${PROJECT_NAME} glfw glad glm)
 
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set(RESOURCE_DIR ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE})
+else()
+    set(RESOURCE_DIR ${CMAKE_BINARY_DIR})
+endif()
+
 add_custom_target(copy_shaders ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/shaders ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/shaders
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/shaders ${RESOURCE_DIR}/shaders
 )
 
 add_custom_target(copy_textures ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/textures ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/textures
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/textures ${RESOURCE_DIR}/textures
 )
 
 add_dependencies(${PROJECT_NAME} copy_shaders copy_textures)
